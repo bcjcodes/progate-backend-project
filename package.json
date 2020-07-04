@@ -1,0 +1,28 @@
+{
+  "name": "progate-backend-project",
+  "version": "1.0.0",
+  "description": "A store managemnent api",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcjcodes/progate-backend-project.git"
+  },
+  "author": "team 2",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bcjcodes/progate-backend-project/issues"
+  },
+  "homepage": "https://github.com/bcjcodes/progate-backend-project#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.21",
+    "nodemon": "^2.0.4",
+    "validator": "^13.1.1"
+  }
+}
