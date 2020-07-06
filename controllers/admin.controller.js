@@ -96,6 +96,43 @@ admin.post(
     }
 );
 
+admin.post(
+    "/admin/signin",
+
+    async (req, res)=> {
+    try {
+        const { email, password } = req.body;
+        const admin = await Admin.findOne({ email });
+
+        if (!admin) res.json({ status: 400, message: 'User does not exist' });
+        const IsMatch = await bcrypt.compare(password, admin.password);
+        if (!IsMatch) {
+            return res.json({ status: 403, message: 'Incorrect username or password, please review details and try again' });
+        }
+        const token = jwt.sign(
+            { email: admin.email, id: admin.id },
+            "random string",
+            { expiresIn: 3600 }
+        );
+
+        res.json({
+            status: 200,
+            data: {
+                id: admin.id,
+                token,
+                message: 'User Logged in Sucessfully'
+            }
+        });
+
+    } catch (err) {
+        res.json({
+            status: 'failed',
+            message: err
+        })
+    }
+}
+);
+
 
 // }
 
