@@ -3,16 +3,16 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 require('dotenv').config()
 const { check, validationResult } = require("express-validator")
-const user = express.Router();
+const admin = express.Router();
 
 //Model
-const User = require("../model/user");
+const Admin = require("../model/admin");
 
 // exports.testingRoute = (req, res, next) => {
 //   // return res.json({ msg: 'Route working....' })
 
-user.post(
-    "/signup",
+admin.post(
+    "/admin/signup",
     [
         check("name", "Please Enter a Valid name")
             .not()
@@ -40,24 +40,25 @@ user.post(
             cfmPassword
         } = req.body;
 
-         //Validate password
-         if (password !== cfmPassword){
+        //Validate password
+        if (password !== cfmPassword){
             return res.status(400).json({
                 message: "Password does not match!"
             });
         }
 
+
         try {
-            let user = await User.findOne({
+            let admin = await Admin.findOne({
                 email
             });
-            if (user) {
+            if (admin) {
                 return res.status(400).json({
                     msg: "User Already Exists"
                 });
             }
 
-            user = new User({
+            admin = new Admin({
                 name,
                 email,
                 password,
@@ -65,14 +66,14 @@ user.post(
             });
 
             const salt = await bcrypt.genSalt(10);
-            user.password = await bcrypt.hash(password, salt);
-            user.cfmPassword = await bcrypt.hash(cfmPassword, salt);
+            admin.password = await bcrypt.hash(password, salt);
+            admin.cfmPassword = await bcrypt.hash(cfmPassword, salt);
 
-            await user.save();
+            await admin.save();
 
             const payload = {
-                user: {
-                    id: user.id
+                admin: {
+                    id: admin.id
                 }
             };
 
@@ -99,4 +100,4 @@ user.post(
 // }
 
 
-module.exports = user;
+module.exports = admin;

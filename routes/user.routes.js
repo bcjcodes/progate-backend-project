@@ -5,5 +5,9 @@ const router = express.Router()
 const user = require('../controllers/user.controller')
 router.use(user);
 
+//Admin Controller
+const admin = require('../controllers/admin.controller')
+router.use(admin);
+
 
 module.exports = router
