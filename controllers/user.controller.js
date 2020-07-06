@@ -95,6 +95,42 @@ user.post(
     }
 );
 
+user.post(
+    "/signin",
+
+    async (req, res)=> {
+    try {
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+
+        if (!user) res.json({ status: 400, message: 'User does not exist' });
+        const IsMatch = await bcrypt.compare(password, user.password);
+        if (!IsMatch) {
+            return res.json({ status: 403, message: 'Incorrect username or password, please review details and try again' });
+        }
+        const token = jwt.sign(
+            { email: user.email, id: user.id },
+            "random string",
+            { expiresIn: 3600 }
+        );
+
+        res.json({
+            status: 200,
+            data: {
+                id: user.id,
+                token,
+                message: 'User Logged in Sucessfully'
+            }
+        });
+
+    } catch (err) {
+        res.json({
+            status: 'failed',
+            message: err
+        })
+    }
+}
+);
 
 // }
 
