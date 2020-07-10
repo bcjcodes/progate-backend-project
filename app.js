@@ -5,7 +5,9 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 
 //Call in the routes
-const users = require('./routes/user.routes')
+
+const admin = require('./controllers/admin.controller')
+const user = require('./controllers/user.controller')
 
 //DB Config
 let db = process.env.MONGODB_URI
@@ -29,7 +31,8 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 // Use Routes
-app.use('/api/v1', users)
+app.use('/api/v1', user)
+app.use('/api/v1', admin)
 
 const port = process.env.PORT
 app.listen(port, () => console.log(`Server listening on port ${port}`))
