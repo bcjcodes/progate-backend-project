@@ -170,7 +170,7 @@ user.post(
 //@route        GET api/v1/product
 //@desc         Get all products
 //@access       Private
-admin.get('/product', authentication.authenticateAdmin, (req, res, next) => {
+user.get('/product', authentication.authenticateAdmin, (req, res, next) => {
     Product.find({}).then(product => {
         res.json(product)
     })
@@ -179,7 +179,7 @@ admin.get('/product', authentication.authenticateAdmin, (req, res, next) => {
 //@route        GET api/v1/product/:id
 //@desc         Get specific id
 //@access       Private
-admin.get(
+user.get(
     '/product/:id',
     authentication.authenticateAdmin,
     (req, res, next) => {
@@ -195,7 +195,7 @@ admin.get(
 
 
 //Create Sales
-admin.post(
+user.post(
     '/sales',
     authentication.authenticateAdmin,
     upload.single('image'),
@@ -217,7 +217,7 @@ admin.post(
 )
 
 //Get all sales
-admin.get('/sales',
+user.get('/sales',
     authentication.authenticateAdmin,
     (req, res) => {
         Sales.find({}, function (err, sales) {
@@ -226,7 +226,7 @@ admin.get('/sales',
     })
 
 //Get a specific sale by id
-admin.get('/sales/:id',
+user.get('/sales/:id',
     authentication.authenticateAdmin,
     (req, res) => {
         Sales.findById(req.params.id, function (err, item) {
