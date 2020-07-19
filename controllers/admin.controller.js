@@ -202,7 +202,33 @@ admin.post(
   }
 )
 
-//@route        PUT ap/v1/product/:id
+//@route        GET api/v1/product
+//@desc         Get all products
+//@access       Private
+admin.get('/product', authentication.authenticateAdmin, (req, res, next) => {
+  Product.find({}).then(product => {
+    res.json(product)
+  })
+})
+
+//@route        GET api/v1/product/:id
+//@desc         Get specific id
+//@access       Private
+admin.get(
+  '/product/:id',
+  authentication.authenticateAdmin,
+  (req, res, next) => {
+    Product.findById(req.params.id).then(product => {
+      if (!product) {
+        res.status(404).send('Product does not exist')
+      } else {
+        res.send(product)
+      }
+    })
+  }
+)
+
+//@route        PUT api/v1/product/:id
 //@desc         Update Products
 //@access       Private
 admin.put('/product/:id', authentication.authenticateAdmin, (req, res) => {
