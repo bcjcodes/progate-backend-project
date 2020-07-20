@@ -5,7 +5,6 @@ require('dotenv').config()
 const { check, validationResult } = require("express-validator")
 const user = express.Router();
 const multer = require('multer')
-const authentication = require('./authentication')
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -169,8 +168,7 @@ user.post(
 
 //@route        GET api/v1/product
 //@desc         Get all products
-//@access       Private
-user.get('/product', authentication.authenticateAdmin, (req, res, next) => {
+user.get('/product' , (req, res, next) => {
     Product.find({}).then(product => {
         res.json(product)
     })
@@ -178,10 +176,8 @@ user.get('/product', authentication.authenticateAdmin, (req, res, next) => {
 
 //@route        GET api/v1/product/:id
 //@desc         Get specific id
-//@access       Private
 user.get(
     '/product/:id',
-    authentication.authenticateAdmin,
     (req, res, next) => {
         Product.findById(req.params.id).then(product => {
             if (!product) {
@@ -197,14 +193,13 @@ user.get(
 //Create Sales
 user.post(
     '/sales',
-    authentication.authenticateAdmin,
     upload.single('image'),
     (req, res) => {
         const sales = {
             name: req.body.name,
             quantity: req.body.quantity,
             price: req.body.price,
-            image
+            image:req.body.file
         }
         Sales.create(sales)
             .then(sales => {
@@ -218,7 +213,6 @@ user.post(
 
 //Get all sales
 user.get('/sales',
-    authentication.authenticateAdmin,
     (req, res) => {
         Sales.find({}, function (err, sales) {
             res.json(sales);
@@ -227,7 +221,6 @@ user.get('/sales',
 
 //Get a specific sale by id
 user.get('/sales/:id',
-    authentication.authenticateAdmin,
     (req, res) => {
         Sales.findById(req.params.id, function (err, item) {
             res.json(item);

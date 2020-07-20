@@ -265,7 +265,6 @@ admin.delete('/product/:id', authentication.authenticateAdmin, (req, res) => {
     )
 })
 
-
 //Get all sales
 admin.get('/sales',
   authentication.authenticateAdmin,
