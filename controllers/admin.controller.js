@@ -39,6 +39,7 @@ const upload = multer({
 //Model
 const Admin = require('../model/admin')
 const Product = require('../model/product')
+const Sales = require('../model/sales')
 const router = require('../routes/user.routes')
 
 // exports.testingRoute = (req, res, next) => {
@@ -263,4 +264,25 @@ admin.delete('/product/:id', authentication.authenticateAdmin, (req, res) => {
       })
     )
 })
+
+//Get all sales
+admin.get('/sales',
+  authentication.authenticateAdmin,
+  (req, res) => {
+    Sales.find({}, function (err, sales) {
+      res.json(sales);
+    });
+  })
+
+//Get a specific sale by id
+admin.get('/sales/:id',
+  authentication.authenticateAdmin,
+  (req, res) => {
+    Sales.findById(req.params.id, function (err, item) {
+      res.json(item);
+    });
+  })
+
+
+
 module.exports = admin
